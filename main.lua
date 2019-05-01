@@ -11,9 +11,13 @@ io.stdout:setvbuf("no")
 ------ Callbacks
 ----------------------------------------------------------------------------------------------------
 
+wallpaper = nil
+
 function love.load()
 	init_audio()
 	start_game()
+
+	wallpaper = love.graphics.newImage("res/wallpaper.jpg")
 end
 
 function love.update(dt)
@@ -33,25 +37,28 @@ _getWidth = g.getWidth
 g.getWidth = function () return 1440 / 2 end
 
 
-xoff = -100
+xoff = 77
 ------------------------------------------------------------
 function love.draw()
 	g.push()
-	g.translate(1440 / 2 / 2, 960 / 2)
+	g.translate(1440 / 2, 0)
 	g.rotate(math.pi/2)
-	g.translate(-960 / 2 - xoff, -1440 / 2 / 2)
 
-	g.translate(400, 100)
+	g.translate(xoff, 0)
+	
 	sided_draw(true)
 	g.pop()
 	
 	g.push()
-	g.translate(g.getWidth(), 0)
-	g.translate(1440 / 2 / 2, 960 / 2)
-	g.rotate(-math.pi / 2)
-	g.translate(-960 / 2 + xoff, -1440 / 2 / 2)
 
-	g.translate(400, 100)
+	g.translate(0, 960)	
+	g.translate(1440 / 2, 0)
+
+	g.rotate(-math.pi / 2)
+
+	g.translate(-xoff, 0)
+
+	--g.translate(400, 100)
 	sided_draw(false)
 	g.pop()
 end
@@ -68,11 +75,18 @@ function sided_draw(lazy_eye)
 	g.print('Pause: P', g.getWidth() - 300, 36)
 	g.print('Restart: R (after "Game over")', g.getWidth() - 300, 48)
 
+
+	g.draw(wallpaper, 176, 0)
+
+	g.translate(400, 0)
+
+
 	if lazy_eye then
 		draw_field()
 		draw_preview(figure.next)
-	else
+	end
 
+	if not lazy_eye then
 		if not (game.state == 'paused') then
 			if rules.shadow then draw_shadow() end
 			draw_figure(figure.x, figure.y, figure.current, draw_block)
@@ -225,9 +239,10 @@ function love.keypressed(key, isrepeat)
 			
 		elseif key == 'g' then
 			xoff = xoff + 1
+			print('xoff: ', xoff)
 		elseif key == 'h' then
 			xoff = xoff - 1
-			
+			print('xoff: ', xoff)
 		elseif key == 'left' then
 			move(-1)
 			game.hold_dir = -1

@@ -96,14 +96,14 @@ function init_hmd()
 	local hmd = -1
 	for i = 1,cnt do
 		local name = love.window.getDisplayName(i)
-		if name == "Toshiba-UH2D" then
+		if string.find(name, "Toshiba") then
 			hmd = i
 			break
 		end
 	end
 
 	if hmd == -1 then love.exit() end
-
+	--hmd = -1
 	
 	love.window.setMode(1440, 960, {display = hmd})
 	love.window.setFullscreen(true)
