@@ -32,9 +32,10 @@ _getWidth = g.getWidth
 --g.getWidth = function () return _getWidth() / 2 end
 g.getWidth = function () return 1440 / 2 end
 
+
+xoff = -100
 ------------------------------------------------------------
 function love.draw()
-	xoff = -100
 	g.push()
 	g.translate(1440 / 2 / 2, 960 / 2)
 	g.rotate(math.pi/2)
@@ -221,6 +222,12 @@ function love.keypressed(key, isrepeat)
 	elseif game.state ~= 'paused' then
 		if key == 'down' then
 			game.gravity = 2
+			
+		elseif key == 'g' then
+			xoff = xoff + 1
+		elseif key == 'h' then
+			xoff = xoff - 1
+			
 		elseif key == 'left' then
 			move(-1)
 			game.hold_dir = -1
