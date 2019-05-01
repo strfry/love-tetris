@@ -28,8 +28,34 @@ end
 
 g = love.graphics
 
+_getWidth = g.getWidth
+--g.getWidth = function () return _getWidth() / 2 end
+g.getWidth = function () return 1440 / 2 end
+
 ------------------------------------------------------------
 function love.draw()
+	xoff = -100
+	g.push()
+	g.translate(1440 / 2 / 2, 960 / 2)
+	g.rotate(math.pi/2)
+	g.translate(-960 / 2 - xoff, -1440 / 2 / 2)
+
+	g.translate(400, 100)
+	sided_draw(true)
+	g.pop()
+	
+	g.push()
+	g.translate(g.getWidth(), 0)
+	g.translate(1440 / 2 / 2, 960 / 2)
+	g.rotate(-math.pi / 2)
+	g.translate(-960 / 2 + xoff, -1440 / 2 / 2)
+
+	g.translate(400, 100)
+	sided_draw(false)
+	g.pop()
+end
+
+function sided_draw(lazy_eye)
 	g.setColor(255, 255, 255)
 	g.print('FPS:'..love.timer.getFPS(), 20, 0)
 	g.print('Score:'..game.score, 20, 12)
@@ -41,12 +67,15 @@ function love.draw()
 	g.print('Pause: P', g.getWidth() - 300, 36)
 	g.print('Restart: R (after "Game over")', g.getWidth() - 300, 48)
 
-	draw_field()
-	draw_preview(figure.next)
+	if lazy_eye then
+		draw_field()
+		draw_preview(figure.next)
+	else
 
-	if not (game.state == 'paused') then
-		if rules.shadow then draw_shadow() end
-		draw_figure(figure.x, figure.y, figure.current, draw_block)
+		if not (game.state == 'paused') then
+			if rules.shadow then draw_shadow() end
+			draw_figure(figure.x, figure.y, figure.current, draw_block)
+		end
 	end
 
 	g.setColor(255, 255, 255)

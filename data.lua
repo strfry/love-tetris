@@ -91,6 +91,24 @@ rules = {
 	-- delay means what delay is between piece fall. distance - number of blocks to fall.
 }
 
+function init_hmd()
+	local cnt = love.window.getDisplayCount()
+	local hmd = -1
+	for i = 1,cnt do
+		local name = love.window.getDisplayName(i)
+		if name == "Toshiba-UH2D" then
+			hmd = i
+			break
+		end
+	end
+
+	if hmd == -1 then love.exit() end
+
+	
+	love.window.setMode(1440, 960, {display = hmd})
+	love.window.setFullscreen(true)
+end
+
 -- stores game info, such as score, game speed etc.
 game = {
 	state = '',--'running', 'clearing', 'game_over', 'spawning', 'paused', 'on_floor'(when lock delay>0)
@@ -118,8 +136,9 @@ game = {
 	init = function()
 		math.randomseed( os.time() )
 
-		love.window.setTitle("LÖVE Tetris")
-		love.window.setMode(500, 600)
+
+		init_hmd()
+		love.window.setTitle("LÖVE Dual Tetris")
 
 		game.score = 0
 		game.level = 1
