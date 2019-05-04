@@ -102,11 +102,15 @@ function init_hmd()
 		end
 	end
 
-	if hmd == -1 then love.exit() end
-	--hmd = -1
-	
 	love.window.setMode(1440, 960, {display = hmd})
-	love.window.setFullscreen(true)
+
+	if hmd == -1 then
+		print('lgvr not found')
+		return
+	end
+
+
+	love.window.setFullscreen(true)	
 end
 
 -- stores game info, such as score, game speed etc.
